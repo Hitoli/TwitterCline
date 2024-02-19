@@ -9,7 +9,8 @@ environment:
 dependencies:
   appwrite: ^11.0.1
   flutter_svg: ^2.0.9
-  riverpod: ^2.5.0
+  # riverpod: ^2.5.0
+  flutter_riverpod: ^2.4.10
   flutter:
     sdk: flutter
 

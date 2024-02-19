@@ -11,6 +11,8 @@ class AuthSmallButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Chip(label:Text(label),backgroundColor: backgroundcolor,labelStyle: TextStyle(color: textColor));
+    return InkWell(
+      onTap: onTap,
+      child: Chip(label:Text(label),backgroundColor: backgroundcolor,labelStyle: TextStyle(color: textColor)));
   }
 }

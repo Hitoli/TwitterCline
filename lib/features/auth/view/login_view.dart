@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:twitter_clone/features/auth/controller/auth_api_controller.dart';
 import 'package:twitter_clone/features/auth/view/signup_view.dart';
 import 'package:twitter_clone/features/auth/widgets/auth_button.dart';
 import 'package:twitter_clone/features/auth/widgets/auth_field.dart';
@@ -8,15 +10,18 @@ import 'package:twitter_clone/theme/pallete.dart';
 import 'package:twitter_clone/constants/constants_export.dart';
 import 'package:twitter_clone/constants/assets_constants.dart';
 
-class LoginView extends StatefulWidget {
+
+
+
+class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
 
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  ConsumerState<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends ConsumerState<LoginView> {
   final emailController= TextEditingController();
   final passwordController=TextEditingController();
 
@@ -27,13 +32,18 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
+  void logIn(){
+    final res = ref.read(authApiControllerProvider.notifier);
+    res.logIn(email: emailController.text, password: passwordController.text, context: context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           leading: Container(),
-          title:SvgPicture.asset(AssetsConstants.twitterLogo,colorFilter: ColorFilter.mode(Pallete.blueColor, BlendMode.srcIn),height: 30,),
+          title:SvgPicture.asset(AssetsConstants.twitterLogo,colorFilter: const ColorFilter.mode(Pallete.blueColor, BlendMode.srcIn),height: 30,),
           centerTitle: true,
         ),
         body:SingleChildScrollView(
@@ -53,7 +63,9 @@ class _LoginViewState extends State<LoginView> {
                 padding: const EdgeInsets.only(right: 10),
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: AuthSmallButton(label: "Done", onTap: (){}, backgroundcolor: Pallete.whiteColor, textColor: Pallete.backgroundColor)),
+                  child: AuthSmallButton(label: "Done", onTap: (){
+                    logIn();
+                  }, backgroundcolor: Pallete.whiteColor, textColor: Pallete.backgroundColor)),
               ),
               const SizedBox(height: 40,),
               RichText(text: TextSpan(

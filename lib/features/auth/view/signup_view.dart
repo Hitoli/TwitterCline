@@ -1,20 +1,22 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:twitter_clone/constants/assets_constants.dart';
+import 'package:twitter_clone/features/auth/controller/auth_api_controller.dart';
 import 'package:twitter_clone/features/auth/view/login_view.dart';
 import 'package:twitter_clone/features/auth/widgets/auth_button.dart';
 import 'package:twitter_clone/features/auth/widgets/auth_field.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
-class SignupView extends StatefulWidget {
+class SignupView extends ConsumerStatefulWidget {
   const SignupView({super.key});
 
   @override
-  State<SignupView> createState() => _SignupViewState();
+  ConsumerState<SignupView> createState() => _SignupViewState();
 }
 
-class _SignupViewState extends State<SignupView> {
+class _SignupViewState extends ConsumerState<SignupView> {
   final emailController= TextEditingController();
   final passwordController=TextEditingController();
 
@@ -23,6 +25,10 @@ class _SignupViewState extends State<SignupView> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+  void signUp(){
+    final res = ref.read(authApiControllerProvider.notifier);
+    res.signUp(email: emailController.text, password: passwordController.text, context: context);
   }
 
   @override
@@ -51,7 +57,9 @@ class _SignupViewState extends State<SignupView> {
                 padding: const EdgeInsets.only(right: 10),
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: AuthSmallButton(label: "Done", onTap: (){}, backgroundcolor: Pallete.whiteColor, textColor: Pallete.backgroundColor)),
+                  child: AuthSmallButton(label: "Done", onTap: (){
+                    signUp();
+                  }, backgroundcolor: Pallete.whiteColor, textColor: Pallete.backgroundColor)),
               ),
               const SizedBox(height: 40,),
               RichText(text: TextSpan(
